@@ -1,14 +1,4 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
-
-/**
- * @title MetaDelta Protocol
- * @dev A decentralized protocol for managing dynamic metadata and delta changes on-chain
- * @notice This contract enables users to store, update, and track versioned metadata with delta tracking
- */
-contract MetaDeltaProtocol {
-    
-    // Struct to store metadata information
+Struct to store metadata information
     struct MetaData {
         string content;
         uint256 version;
@@ -17,28 +7,13 @@ contract MetaDeltaProtocol {
         bool isActive;
     }
     
-    // Struct to track delta changes
-    struct DeltaChange {
-        uint256 version;
-        string previousContent;
-        string newContent;
-        uint256 timestamp;
-        address updater;
-    }
-    
-    // Mapping from metadata ID to MetaData
+    Mapping from metadata ID to MetaData
     mapping(uint256 => MetaData) public metadata;
     
-    // Mapping from metadata ID to array of delta changes
-    mapping(uint256 => DeltaChange[]) public deltaHistory;
-    
-    // Counter for metadata IDs
+    Counter for metadata IDs
     uint256 public metadataCounter;
     
-    // Mapping to track user's metadata
-    mapping(address => uint256[]) public userMetadata;
-    
-    // Events
+    Events
     event MetadataCreated(uint256 indexed metadataId, address indexed creator, string content, uint256 timestamp);
     event MetadataUpdated(uint256 indexed metadataId, address indexed updater, uint256 version, uint256 timestamp);
     event MetadataDeactivated(uint256 indexed metadataId, address indexed deactivator, uint256 timestamp);
@@ -81,16 +56,7 @@ contract MetaDeltaProtocol {
         
         MetaData storage meta = metadata[_metadataId];
         
-        // Store delta change
-        deltaHistory[_metadataId].push(DeltaChange({
-            version: meta.version,
-            previousContent: meta.content,
-            newContent: _newContent,
-            timestamp: block.timestamp,
-            updater: msg.sender
-        }));
-        
-        // Update metadata
+        Update metadata
         meta.content = _newContent;
         meta.version++;
         meta.timestamp = block.timestamp;
@@ -152,3 +118,6 @@ contract MetaDeltaProtocol {
         return (meta.content, meta.version, meta.timestamp, meta.lastModifier, meta.isActive);
     }
 }
+// 
+Updated on 2025-11-05
+// 
